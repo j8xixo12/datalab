@@ -111,7 +111,11 @@ NOTES:
  */
 int absVal(int x)
 {
-    return 42;
+    int mask;
+    mask = x >> 31;
+    x = x ^ mask;
+    x = x - mask;
+    return x;
 }
 
 /*
