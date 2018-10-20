@@ -144,8 +144,11 @@ int addOK(int x, int y)
  *   Rating: 2
  */
 int allEvenBits(int x)
-{
-    return 42;
+{   
+    int a = (0xaa << 8) + 0xaa;
+    int b = (a << 16) + a;
+    x = (x | b) + 1;
+    return !x;
 }
 
 /*
@@ -158,7 +161,10 @@ int allEvenBits(int x)
  */
 int allOddBits(int x)
 {
-    return 42;
+    int a = (0x55 << 8) | 0x55;
+    int b = (a << 16) | a;
+    x = (x | b) + 1;
+    return !x;
 }
 
 /*
@@ -171,7 +177,9 @@ int allOddBits(int x)
  */
 int anyEvenBit(int x)
 {
-    return 42;
+    int a = (0x55 << 8) | 0x55;
+    int b = (a << 16) | a;
+    return !!(x & b);
 }
 
 /*
@@ -184,7 +192,10 @@ int anyEvenBit(int x)
  */
 int anyOddBit(int x)
 {
-    return 42;
+    int a = (0xaa << 8) | 0xaa;
+    int b = (a << 16) | a;
+    return !!(x & b);
+
 }
 
 /*
@@ -196,7 +207,7 @@ int anyOddBit(int x)
  */
 int bang(int x)
 {
-    return 42;
+    return 1 & (1 ^ (x | (~x + 1)) >> 31);
 }
 
 /*
@@ -208,7 +219,7 @@ int bang(int x)
  */
 int bitAnd(int x, int y)
 {
-    return 42;
+    return ~(~x | ~y);
 }
 
 /*
@@ -220,7 +231,22 @@ int bitAnd(int x, int y)
  */
 int bitCount(int x)
 {
-    return 42;
+    int mask1 = 0x55;
+    int mask2 = 0x33;
+    int mask3 = 0x0F;
+    int result = 0;
+
+    mask1 = mask1 | (mask1 << 8);
+    mask1 = mask1 | (mask1 << 16);
+    mask2 = mask2 | (mask2 << 8);
+    mask2 = mask2 | (mask2 << 16);
+    mask3 = mask3 | (mask3 << 8);
+    mask3 = mask3 | (mask3 << 16);
+
+    result = (x & mask1) + ((x >> 1) & mask1);
+    result = (result & mask2) + ((result >> 2) & mask2);
+    result = (result & mask3) + ((result >> 4) & mask3);
+    return (result + (result >> 8) + (result >> 16) + (result >> 24)) & 0xff;
 }
 
 /*
